@@ -1,0 +1,7 @@
+{
+  "name": "vagalume", "version": "1.0.0", "private": true, "type": "module",
+  "description": "Um puzzle de luz e caminhos hexagonais num jardim noturno.",
+  "scripts": {"dev":"vite --host 127.0.0.1", "build":"vite build", "preview":"vite preview --host 127.0.0.1", "test":"node --test tests/*.test.js"},
+  "dependencies": {"svelte":"5.57.3"},
+  "devDependencies": {"@sveltejs/vite-plugin-svelte":"7.3.1", "vite":"8.3.5"}
+}
