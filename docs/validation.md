@@ -20,6 +20,10 @@ Orvalho, Raízes, Vento sul e Constelação foram concluídos pela UI usando o b
 
 Viewport 390 × 844: tabuleiro de 19 peças sem overflow horizontal (documento 390 px); primeira peça com aproximadamente 61 × 71 px, rotação e desfazer após resize funcionaram. Mouse/pointer e viewport não equivalem a teste físico de toque, nem foi feita auditoria completa de leitor de tela. Eventos blur/visibility são cobertos com EventTarget; o navegador integrado historicamente não reproduz esses eventos ao ocultar/trocar suas abas. O puzzle não tem simulação que avance enquanto ausente.
 
+Na [demo pública](https://gustapaz.github.io/vagalume/), o primeiro jardim foi novamente concluído com 20 rotações pela UI, sem dicas: [vitória publicada](public-victory.png). No segundo, 17 dicas iluminaram 18 das 19 peças, restando duas pontas soltas: [partida publicada](public-gameplay.png). A dica seguinte concluiu o jardim normalmente. Reinício restaurou zero movimentos; pausa e retomada por Escape funcionaram. Setas de navegação moveram o foco da peça 1 para a 2; botão direito efetuou rotação inversa. Houve ajuste de pose visual acumulada para manter o sentido de rotação ao atravessar 360°, sem alterar regras ou avaliar a vitória pela animação. O anúncio acessível também informa a retomada, em vez de permanecer com a mensagem de pausa.
+
 ## Segurança e custo
 
 Projeto estático sem credenciais, APIs ou backend. Publicação contém apenas build e avisos de licença. `.env`, dependências e build local são ignorados pelo Git. Workflow tem checkout sem credenciais persistidas, build com leitura e deploy apenas Pages/OIDC. GitHub Pages público gratuito, sem cartão ou faturamento ativado.
+
+Gitleaks 8.30.1, configuração padrão externa confiável, redação integral e exclusões locais desconsideradas: staged, histórico e build examinados sem achados de segredos. Secret scanning, proteção de push e alertas/atualizações de segurança habilitados. A conta foi verificada como gustapaz; autor e committer usam Gustavo Paz e noreply. API de contribuidores da main retornou somente gustapaz. Não há merge automático de PRs de dependências.

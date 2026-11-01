@@ -29,7 +29,10 @@
     await tick(); document.querySelector('.modal button')?.focus({preventScroll:true});
   }
   async function closePanel() {
-    panel = null; game.resume(); game = game; await tick();
+    const wasPaused = game.mode === 'paused';
+    panel = null; game.resume(); game = game;
+    if (wasPaused && started) announce('Jardim retomado.');
+    await tick();
     if (lastFocus?.isConnected && !lastFocus.disabled) lastFocus.focus({preventScroll:true});
     else if (started) focusBoard();
   }
@@ -109,7 +112,7 @@
               <svg viewBox="0 0 100 116" aria-hidden="true">
                 <path class="hex-shadow" d="M50 2L98 30V86L50 114L2 86V30Z"/>
                 <path class="hex" d="M50 2L98 30V86L50 114L2 86V30Z"/>
-                <g class="channels" style={`transform:rotate(${tile.rotation*60}deg)`}>
+                <g class="channels" style={`transform:rotate(${tile.visualRotation*60}deg)`}>
                   {#each tile.base as d}<path class="channel" d={`M50 58 L${50+Math.cos(d*Math.PI/3)*49} ${58+Math.sin(d*Math.PI/3)*49}`}/>{/each}
                   {#if report.live.has(tile.id)}{#each tile.base as d}<path class="flow" d={`M50 58 L${50+Math.cos(d*Math.PI/3)*49} ${58+Math.sin(d*Math.PI/3)*49}`}/>{/each}{/if}
                 </g>
@@ -125,7 +128,7 @@
         </div>
       </section>
       {#if !started}<div class="invitation"><button class="start pill primary" onclick={start}>Entrar no jardim <span>↗</span></button><p>Sem pressa. Sem perder vidas. Só mais uma conexão.</p></div>
-      {:else}<div class="game-controls"><p class="diagnosis">{report.solved?'O jardim floresceu.':`${report.leaks} pontas soltas · conecte todas as peças`} {#if game.hints}<span>· com assistência</span>{/if}</p><div class="tools"><button class="pill" onclick={undo} disabled={!game.history.length||game.mode!=='playing'}>↶ <span>Desfazer</span></button><button class="pill" onclick={hint} disabled={game.mode!=='playing'}>✧ <span>Uma luz</span></button><button class="pill" onclick={restart}>⟳ <span>Recomeçar</span></button><button class="pill" onclick={pause} disabled={game.mode!=='playing'}>Ⅱ <span>Pausa</span></button></div><p class="tip">Clique para girar · Shift + clique para voltar · a peça central é fixa</p></div>{/if}
+      {:else}<div class="game-controls"><p class="diagnosis">{report.solved?'O jardim floresceu.':`${report.leaks} pontas soltas · conecte todas as peças`} {#if game.hints}<span>· com assistência</span>{/if}</p><div class="tools"><button class="pill" onclick={undo} disabled={!game.history.length||game.mode!=='playing'}>↶ <span>Desfazer</span></button><button class="pill" onclick={hint} title="Dica: orienta uma peça e marca a partida como assistida" aria-label="Uma luz: usar dica, partida assistida" disabled={game.mode!=='playing'}>✧ <span>Uma luz</span></button><button class="pill" onclick={restart}>⟳ <span>Recomeçar</span></button><button class="pill" onclick={pause} disabled={game.mode!=='playing'}>Ⅱ <span>Pausa</span></button></div><p class="tip">Clique para girar · Shift + clique para voltar · a peça central é fixa</p></div>{/if}
       <nav class="garden-select" aria-label="Escolher jardim">{#each gardens as garden,i}<button class:active={game.level===i} aria-label={`Jardim ${i+1}: ${garden.name}${save.completed.includes(i)?', concluído':''}`} aria-current={game.level===i?'step':undefined} onclick={()=>selectLevel(i)}><span>{save.completed.includes(i)?'✿':String(i+1).padStart(2,'0')}</span><small>{garden.name}</small></button>{/each}</nav>
     </main>
     <footer><span>FEITO DE PEQUENOS ENCONTROS</span><a href="https://github.com/gustapaz/vagalume" target="_blank" rel="noopener noreferrer">Código & bastidores ↗</a><span>{save.completed.length} de 5 jardins floridos · neste dispositivo</span></footer>

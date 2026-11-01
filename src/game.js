@@ -31,7 +31,7 @@ export function makeBoard(level) {
   for(const tile of tiles){
     if(!tile.locked&&anchors>0&&tile.base.length>1){tile.locked=true;anchors--;}
     if(!tile.locked)tile.rotation=1+Math.floor(random()*5);
-    tile.initial=tile.rotation;
+    tile.initial=tile.rotation;tile.visualRotation=tile.rotation;
   }
   return tiles;
 }
@@ -56,11 +56,11 @@ export class Garden {
   turn(id,amount=1){
     const tile=this.tiles.find(t=>t.id===id);
     if(this.mode!=='playing'||!tile||tile.locked||!Number.isInteger(amount)||amount===0)return false;
-    this.history.push({id,rotation:tile.rotation});
-    tile.rotation=mod(tile.rotation+amount);this.moves++;
+    this.history.push({id,rotation:tile.rotation,visualRotation:tile.visualRotation});
+    tile.rotation=mod(tile.rotation+amount);tile.visualRotation+=amount;this.moves++;
     if(this.result.solved)this.mode='won';return true;
   }
-  undo(){if(this.mode!=='playing'||!this.history.length)return false;const prev=this.history.pop();this.tiles.find(t=>t.id===prev.id).rotation=prev.rotation;this.moves=Math.max(0,this.moves-1);return true;}
+  undo(){if(this.mode!=='playing'||!this.history.length)return false;const prev=this.history.pop();const tile=this.tiles.find(t=>t.id===prev.id);tile.rotation=prev.rotation;tile.visualRotation=prev.visualRotation;this.moves=Math.max(0,this.moves-1);return true;}
   hint(){
     if(this.mode!=='playing')return null;
     const tile=this.tiles.find(t=>!t.locked&&ports(t).slice().sort().join(',')!==t.base.slice().sort().join(','));

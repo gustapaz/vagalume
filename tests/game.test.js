@@ -21,7 +21,8 @@ test('restoring reference orientation proves all five gardens solvable and fully
 });
 test('six rotations return ports to original orientation; negative rotations wrap',()=>{
   const game=new Garden();const tile=game.tiles.find(t=>!t.locked), original=ports(tile);
-  for(let i=0;i<6;i++)game.turn(tile.id);assert.deepEqual(ports(tile),original);assert.equal(game.moves,6);assert.equal(mod(-1),5);
+  const initialVisual=tile.visualRotation;
+  for(let i=0;i<6;i++)game.turn(tile.id);assert.deepEqual(ports(tile),original);assert.equal(game.moves,6);assert.equal(mod(-1),5);assert.equal(tile.visualRotation,initialVisual+6);
 });
 test('fixed source and invalid moves cannot mutate board or score',()=>{
   const game=new Garden();const before=JSON.stringify(game.tiles);

@@ -4,6 +4,8 @@
 
 **[Entrar no jardim](https://gustapaz.github.io/vagalume/)**
 
+![Vagalume publicado: o jardim Orvalho com 18 de 19 peças iluminadas](docs/public-gameplay.png)
+
 ## Como jogar
 
 - Clique/toque, Enter ou Espaço: girar a peça 60°.
